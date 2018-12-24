@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CapstoneProject.Data.User>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List of Users</title>
+</head>
+<body>
+    @section f{ 
+    <h2>This is the Current Amount of Users: @Model.Count()</h2>
+    }
+    @*@Html.Partial("_User", User)*@
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+               UserID: @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Password)*@
+                @item.Password <!--Implicit Code Expression-->
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

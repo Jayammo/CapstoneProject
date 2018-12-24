@@ -1,0 +1,51 @@
+﻿.body{
+    background-color:white;
+}
+
+.navbar-inverse{
+    border-bottom: yellow;
+    border-style: solid;
+    border-width: thin;
+}
+
+#listMapContainer{
+    width:auto;
+    height: inherit
+}
+
+#mainContainer{
+    margin-top:20px;
+    background-color:white;
+    border-radius:10px;
+    border-color:yellow;
+    border-width:thin;
+    border-style:solid;
+    margin-bottom:20px;
+    height: 544px;
+    width: 1000px;
+}
+
+#buttonBar {
+    background-color: inherit;
+    margin-top: 200px;
+    width: auto;
+    height: 200px;
+}
+
+#mapDetails{
+    padding-top: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+#detailsContainer {
+     
+}
+
+#mapSelector{
+    padding-top: 20px;
+    width: 100%;
+    max-height:300px;
+    overflow-y:auto;
+}
+

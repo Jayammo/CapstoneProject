@@ -1,0 +1,83 @@
+﻿@model CapstoneProject.Data.Map
+@{
+    ViewBag.Title = "EditMapView";
+    var MapId = Model.Id;
+    var MapName = Model.Name;
+    var userId = Model.UserId;
+}
+
+
+<h2 id="StaticMap">@MapName</h2>
+<link href="~/Content/EditMapView.css" rel="stylesheet" type="text/css" />
+
+<div class="container-fluid" id="mainContainer">
+    <a hidden id="mapId">@MapId</a>
+    <div class="container-fluid" id="mapContainer">
+        <div class="row">
+            <div class="col-md-8">
+                <h3>The Map</h3>
+                <div id="map">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>Map ToolBar</h3>
+                <div class="btn-group" id="mapToolBar">                   
+                    <button class="btn btn-primary btn-block"onclick="drawLine()" id="lineBtn">
+                        <span class="glyphicon glyphicon-resize-horizontal" ></span> Line
+                    </button>
+                    <button class="btn btn-primary btn-block" onclick="drawCircle()" id="circleBtn">
+                        <span class="glyphicon glyphicon-stop"></span> Circle
+                    </button>
+                    <button class="btn btn-primary btn-block" onclick="drawRectangle()" id="rectangleBtn">
+                        <span class="glyphicon glyphicon-stop"></span> Box
+                    </button>
+                    <button class="btn btn-primary btn-block" onclick="drawAnnotate()" id="annotateBtn">
+                        <span class="glyphicon glyphicon-pencil"></span> Annotate
+                    </button>
+                    <button class="btn btn-primary btn-block" onclick="eraseMarker()" id="eraseBtn">
+                        <span class="glyphicon glyphicon-pencil"></span> Erase
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+            <div class="table-responsive" id="labelDetails">
+                <table class="table" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+            <div class="col-md-4"></div>
+                <div id="btnGroup">
+                <a type="button" class="btn btn-info" onclick="runPublish()" href="@Url.Action("ListMap", "Home", new {myUserId = userId })">
+                    <span class="glyphicon glyphicon-save-file"></span> Publish Map
+                </a>
+                <button id="saveBtn" type="button" class="btn btn-info" onclick="saveMap()">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Save Map
+                </button>
+            </div>
+                </div>
+    </div>
+
+</div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/EditMapView")
+    @Scripts.Render("~/bundles/PublishMap")
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTPPDPCom1SnS8kHnEmTqTotz6kdZWgr0&&libraries=drawing,geometry&callback=initMap">
+</script>
+
+
+

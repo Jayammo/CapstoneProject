@@ -1,0 +1,165 @@
+﻿@model CapstoneProject.Data.User
+
+@{
+    ViewBag.Title = "ListMapView";
+    var MapList = Model.Maps;
+    var userName = Model.UserName;
+}
+
+<link href="~/Content/ListMapView.css" rel="stylesheet" type="text/css" />
+<h2>Hello @userName,</h2>
+
+
+<div class="container-fluid" id="mainContainer">
+    <div class="container-fluid" id="listMapContainer">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-group" id="mapSelector">
+                    @{
+                        foreach (var map in MapList)
+                        {
+                            <a class="list-group-item" id="@map.Id">@map.Name</a>
+                            <a hidden id="@map.Name">@map.Id</a>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive" id="mapDetails">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Map ID</th>
+                                <th>Map Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td id="mapId"></td>
+                            <td id="mapName"></td>
+                            <td id="mapDescription"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class="container" id="buttonBar">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                            <span class="glyphicon glyphicon-plus"></span> Create Map
+                        </button>
+                        <button type="button" class="btn btn-info" id="editMapButton">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit Map
+                        </button>
+                        <button type="button" class="btn btn-info" id="deleteButton">
+                            <span class="glyphicon glyphicon-minus"></span> Delete Map
+                        </button>
+                    </div>
+                </div>
+        </div>
+        
+            @*<button type="button" class="btn btn-info">
+                <span class="glyphicon glyphicon-save-file"></span> Publish Map
+            </button>
+            <button type="button" class="btn btn-info" id="TestMapJson">
+                <span class="glyphicon glyphicon-save-file"></span>  Test Map Json
+            </button>*@
+        </div>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Create New Map</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" action="~/Home/CreateMap/@Model.Id" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="name">Map Name:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="Name" name="name" placeholder="Enter Map Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="description">Map Description:</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" rows="8" id="Description" name="description" placeholder="Enter Description:"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@*@Scripts.Render("~/bundles/EditMapView")*@
+
+
+<script>
+    $(function () {
+        var $map;
+        var data = "";
+        $('.list-group-item').on('click', function () {
+            var $this = $(this);
+            data = $this.attr("id");
+            pick = $this.text();
+            console.log(pick);
+            //console.log(data);
+            //var $alias = $this.data('alias');
+
+            $('.active').removeClass('active');
+            $this.toggleClass('active');
+            //There is a better way to do this. I think this can be done just Client - side.
+            //Ajax call to get map object via JSON 
+            $.post("/Home/MapDetail", { mapId : data }).done(function (data) {
+                //Parsing Json to form a class.
+                var myMap = $.parseJSON(data);
+                $("#mapId").text(myMap.Id);
+                $("#mapName").text(myMap.Name);
+                $("#mapDescription").text(myMap.Description);
+
+            });
+            // Pass clicked link element to another function
+        });
+
+        @*function myfunction($this) {
+            console.log($this.text());  // Will log Paris | France | etc...
+            var id = $this.text();
+            //window.location.href = @Url.Action("Home", "EditMapView");
+        };*@
+        //var item = document.getElementsByClassName("listgroup-item active");
+        //console.log(item);
+        $("#editMapButton").on('click', function () {
+            console.log(data);
+            location.href = '@Url.Action("EditMapView", "Home")?name=' + data;
+            //window.location.href = @*'@Url.Action("EditMapView", "Home", new {name = mapName})';*@
+            console.log(pick);
+        });
+
+        $("#deleteButton").on('click', function () {
+            var mapName = String(pick);
+            location.href = '@Url.Action("Delete", "Home")?name=' + data;
+        });
+
+    });
+</script>
+
+
